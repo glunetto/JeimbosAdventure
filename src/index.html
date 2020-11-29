@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <!-- Required Meta Tags -->
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+   <!-- Title -->
+   <title><%= htmlWebpackPlugin.options.title %></title>
+
+   <!-- P5 -->
+   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"
+      integrity="sha512-WIklPM6qPCIp6d3fSSr90j+1unQHUOoWDS4sdTiR8gxUTnyZ8S2Mr8e10sKKJ/bhJgpAa/qG068RDkg6fIlNFA=="
+      crossorigin="anonymous"></script>
+
+   <!-- css -->
+   <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+   <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+         <a class="navbar-item" href="#">
+            <img class="image is-24x24" src="./img/logo.png">
+         </a>
+
+         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+            data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+         </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+         <div class="navbar-start"> </div>
+
+         <div class="navbar-end">
+            <div class="navbar-item">
+            </div>
+         </div>
+      </div>
+   </nav>
+
+   <div class="section">
+      <div class="container">
+         <div class="card">
+            <div id="canvas-container"></div>
+         </div>
+      </div>
+   </div>
+</body>
+
+</html>
