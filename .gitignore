@@ -1,0 +1,10 @@
+
+# node modules
+node_modules
+
+# visual studio code
+*.code-workspace
+
+# compiled code
+dist
+
