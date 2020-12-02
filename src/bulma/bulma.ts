@@ -1,14 +1,14 @@
 
 /* NAVBAR */
-function setupNavbar() {
-   const hamburgers = document.querySelectorAll('.navbar-burger');
+function setupNavbar(): void {
+   const hamburgers: NodeListOf<HTMLElement> = document.querySelectorAll('.navbar-burger');
    if (!hamburgers.length) {
       return;
    }
 
    hamburgers.forEach((hamburger) => {
       hamburger.addEventListener('click', () => {
-         const target = hamburger.dataset.target && document.getElementById(hamburger.dataset.target);
+         const target = document.getElementById(hamburger.dataset.target ?? "");
          hamburger.classList.toggle('is-active');
          target?.classList.toggle('is-active');
       });
@@ -16,12 +16,12 @@ function setupNavbar() {
 }
 
 /* MODAL */
-function toggleModal(modal) {
+function toggleModal(modal: HTMLElement): void {
    modal.classList.toggle("is-active");
 }
 
-function setupOpenTriggers() {
-   const triggerElements = document.querySelectorAll("[data-bulma-target='modal']");
+function setupOpenTriggers(): void {
+   const triggerElements: NodeListOf<HTMLElement> = document.querySelectorAll("[data-bulma-target='modal']");
    triggerElements.forEach((triggerElement) => {
       const targetSelector = triggerElement.dataset.bulmaTargetId;
       if (!targetSelector) {
@@ -41,8 +41,8 @@ function setupOpenTriggers() {
    });
 }
 
-function setupDismissTrigers() {
-   const modals = document.querySelectorAll(".modal");
+function setupDismissTrigers(): void {
+   const modals: NodeListOf<HTMLElement> = document.querySelectorAll(".modal");
    modals.forEach((modal) => {
       const children = modal.querySelectorAll("[data-bulma-modal='close'], .modal-background");
       children.forEach((child) => {
@@ -53,13 +53,12 @@ function setupDismissTrigers() {
    });
 }
 
-function setupModals() {
+function setupModals(): void {
    setupOpenTriggers();
    setupDismissTrigers();
 }
 
-/* EXPORTS */
-module.exports = {
+export default {
    setupNavbar,
    setupModals
 }
