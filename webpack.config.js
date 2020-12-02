@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-   entry: './src/index.js',
+   entry: './tmp/index.js',
    output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'js/bundle.js'
@@ -35,7 +35,7 @@ module.exports = {
       new HtmlWebpackPlugin({
          title: 'Jeimbo\'s Adventure',
          filename: 'index.html',
-         template: 'src/index.html',
+         template: 'assets/index.html',
          //favicon: 'assets/img/maskable_icon.png',
          //inject: 'head',
          scriptLoading: 'defer',

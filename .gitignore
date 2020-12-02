@@ -5,6 +5,10 @@ node_modules
 # visual studio code
 *.code-workspace
 
+# typescript files
+*.tsbuildinfo
+
 # compiled code
+tmp
 dist
 
