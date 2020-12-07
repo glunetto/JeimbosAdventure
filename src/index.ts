@@ -6,11 +6,7 @@ require('../assets/scss/index.scss');
 
 // modules
 import Bulma from './bulma/bulma';
-
-import Character from './js/character';
-import Robot from './js/robot';
-import Girl from './js/girl';
-import Boy from './js/boy';
+import GameEngine from './js/game-engine';
 
 // type definitions
 declare const ResizeObserver: any;
@@ -27,36 +23,16 @@ window.addEventListener('load', async function init() {
 
    new p5((p: any) => {
 
-      const bg_overlap: number = 5;
+      const engine = new GameEngine(p);
 
-      const characters: Array<Character> = [new Boy(p), new Girl(p), new Robot(p)];
-      let current_character: number = 0;
+      const bg_overlap: number = 5;
 
       let dynamic_background: any;
       let static_background: any;
-
-      let playing: boolean = false;
       let x: number = 0;
 
       p.keyPressed = function () {
-         switch (p.keyCode) {
-            case p.RIGHT_ARROW:
-               characters[current_character].run();
-               playing = true;
-               break;
-            case p.LEFT_ARROW:
-               x = 0;
-               playing = false;
-               ++current_character;
-               current_character %= characters.length;
-               characters[current_character].idle();
-               break;
-            case p.DOWN_ARROW:
-               characters[current_character].idle();
-               break;
-            default:
-               break;
-         }
+         engine.keyPressed();
       }
 
       p.preload = function () {
@@ -77,22 +53,22 @@ window.addEventListener('load', async function init() {
       p.draw = function () {
          p.clear();
 
-         if (!playing) {
-            p.image(static_background, x, 0, p.width, p.height);
+         if (!engine.isPlaying) {
+            p.image(static_background, 0, 0, p.width, p.height);
          }
          else {
             p.image(dynamic_background, x - dynamic_background.width + bg_overlap, 0, dynamic_background.width, p.height);
             p.image(dynamic_background, x, 0, dynamic_background.width, p.height);
             p.image(dynamic_background, x + dynamic_background.width - bg_overlap, 0, dynamic_background.width, p.height);
-            if (characters[current_character].isRunning) {
-               x -= characters[current_character].speed;
+            if (engine.isMoving) {
+               x -= engine.speed;
                if (--x < p.width - 2 * dynamic_background.width + bg_overlap) {
                   x = p.width - dynamic_background.width - bg_overlap;
                }
             }
          }
 
-         characters[current_character].draw();
+         engine.draw();
       }
 
    }, canvas_container);

@@ -3,6 +3,7 @@ interface CharacterOptions {
 
    character_name: string;
    idle_frames: number;
+   jump_frames: number;
    run_frames: number;
    path: String;
 
@@ -21,6 +22,7 @@ export default abstract class Character {
    p5_instance: any;
 
    sheet_idle: Array<any> = [];
+   sheet_jump: Array<any> = [];
    sheet_run: Array<any> = [];
 
    character_name: String;
@@ -41,13 +43,22 @@ export default abstract class Character {
       this.speed = 30 / opt.run_frames;
 
       this.sheet_idle = this.loadSheet('Idle', opt.path, opt.idle_frames);
+      this.sheet_jump = this.loadSheet('Jump', opt.path, opt.jump_frames);
       this.sheet_run = this.loadSheet('Run', opt.path, opt.run_frames);
    }
 
+   get isIdleing(): boolean { return this.current_state === STATE.IDLE; }
+   get isJumping(): boolean { return this.current_state === STATE.JUMP; }
    get isRunning(): boolean { return this.current_state === STATE.RUN; }
+   get isMoving(): boolean { return this.isRunning || this.isJumping; }
 
    idle(): void {
       this.current_state = STATE.IDLE;
+      this.current_frame = 0;
+   }
+
+   jump(): void {
+      this.current_state = STATE.JUMP;
       this.current_frame = 0;
    }
 
@@ -61,15 +72,26 @@ export default abstract class Character {
          return;
       }
       ++this.current_frame;
+
+      if (this.current_state === STATE.JUMP && this.current_frame === this.sheet_jump.length) {
+         this.run();
+      }
    }
 
    draw(): void {
       this.animate();
 
+      let y_mod = 0;
       let img;
       switch (this.current_state) {
          case STATE.RUN:
             img = this.sheet_run[this.current_frame % this.sheet_run.length];
+            break;
+         case STATE.JUMP:
+            img = this.sheet_jump[this.current_frame % this.sheet_jump.length];
+            const b = 2 * this.p5_instance.height / this.sheet_jump.length;
+            const a = - b / this.sheet_jump.length;
+            y_mod = a * this.current_frame**2 + b * this.current_frame;
             break;
          case STATE.IDLE:
          default:
@@ -77,8 +99,13 @@ export default abstract class Character {
             break;
       }
 
+      const x = (this.p5_instance.width - img.width / 2) / 2;
+      const y = this.p5_instance.height - img.height / 2 - y_mod;
+      const w = img.width / 2;
+      const h = img.height / 2;
+
       this.p5_instance.push();
-      this.p5_instance.image(img, (this.p5_instance.width - img.width / 2) / 2, this.p5_instance.height - img.height / 2, img.width / 2, img.height / 2);
+      this.p5_instance.image(img, x, y, w, h);
       this.p5_instance.pop();
    }
 }
